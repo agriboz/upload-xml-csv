@@ -27,7 +27,12 @@
           {{ props.row.amount }}
         </b-table-column>
         <b-table-column v-slot="props" field="amount" label="Amount">
-          <b-button type="is-primary" @click="navigateDetail(props.row._id)"
+          <b-button
+            type="is-primary"
+            @click="
+              isComponentModalActive = true
+              formProps = props.row
+            "
             >Edit</b-button
           >
           <b-button type="is-danger" @click="navigateDetail(props.row._id)"
@@ -39,6 +44,53 @@
         {{ alert.message }}
       </div>
     </div>
+    <b-modal
+      v-if="formProps"
+      v-model="isComponentModalActive"
+      has-modal-card
+      trap-focus
+      :destroy-on-hide="false"
+      aria-role="dialog"
+      aria-label="Product Detail"
+      aria-modal
+    >
+      <form action="">
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Edit</p>
+            <button
+              type="button"
+              class="delete"
+              @click="isComponentModalActive = false"
+            />
+          </header>
+          <section class="modal-card-body">
+            <b-field label="Email">
+              <b-input :value="formProps.handle" placeholder="Handle" required>
+              </b-input>
+            </b-field>
+
+            <b-field label="Location">
+              <b-input
+                :value="formProps.location"
+                placeholder="Location"
+                required
+              >
+              </b-input>
+            </b-field>
+
+            <b-field label="Amount">
+              <b-input :value="formProps.amount" placeholder="Amount" required>
+              </b-input>
+            </b-field>
+          </section>
+          <footer class="modal-card-foot">
+            <b-button label="Close" @click="isComponentModalActive = false" />
+            <b-button label="Update" type="is-primary" />
+          </footer>
+        </div>
+      </form>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -47,6 +99,8 @@ import { mapState, mapActions } from 'vuex'
 export default {
   middleware: 'auth',
   data: () => ({
+    isComponentModalActive: false,
+    formProps: null,
     isEmpty: false,
     isBordered: false,
     isStriped: true,
