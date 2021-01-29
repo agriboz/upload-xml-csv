@@ -22,8 +22,12 @@
       <aside class="column is-2 section">
         <p class="menu-label is-hidden-touch">General</p>
         <ul class="menu-list">
-          <li v-for="(item, key) of items" :key="key">
-            <nuxt-link :to="item.to" exact-active-class="is-active">
+          <li v-for="(item, key) of menu" :key="key">
+            <nuxt-link
+              v-if="item.isAuthenticated"
+              :to="item.to"
+              exact-active-class="is-active"
+            >
               <b-icon :icon="item.icon" /> {{ item.title }}
             </nuxt-link>
           </li>
@@ -39,21 +43,24 @@
 
 <script>
 export default {
-  data() {
-    return {
-      items: [
+  computed: {
+    menu() {
+      return [
         {
           title: 'Home',
           icon: 'home',
+          isAuthenticated: true,
           to: { name: 'index' },
         },
         {
-          title: 'Inspire',
+          title: 'Products',
           icon: 'lightbulb',
-          to: { name: 'inspire' },
+          isAuthenticated:
+            this.$store.state.user.user && this.$store.state.user.user.token,
+          to: { name: 'products' },
         },
-      ],
-    }
+      ]
+    },
   },
 }
 </script>

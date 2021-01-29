@@ -1,17 +1,17 @@
 <template>
   <section class="section">
-    <Login />
+    <Register />
   </section>
 </template>
 
 <script>
-import Login from '~/components/Login'
+import Register from '~/components/Register'
 
 export default {
   name: 'HomePage',
 
   components: {
-    Login,
+    Register,
   },
 }
 </script>
